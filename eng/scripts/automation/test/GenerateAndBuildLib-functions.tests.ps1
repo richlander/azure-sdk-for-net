@@ -14,8 +14,11 @@ Then invoke tests with:
 #>
 . (Join-Path $PSScriptRoot ".." ".." ".." "common" "scripts" "Helpers" PSModule-Helpers.ps1)
 
-Install-ModuleIfNotInstalled "Pester" "5.3.3" | Import-Module
+Write-Host "BEBRODER yaml"
 Install-ModuleIfNotInstalled "powershell-yaml" "0.4.1" | Import-Module
+Write-Host "BEBRODER pester"
+Install-ModuleIfNotInstalled "Pester" "5.3.3" -Repository "https://www.powershellgallery.com/api/v2" | Import-Module
+
 
 BeforeAll {
     . $PSScriptRoot/../GenerateAndBuildLib.ps1
@@ -68,7 +71,7 @@ Describe "update autorest.md" -Tag "UnitTest" {
         }
 
         $yml = ConvertFrom-YAML $autorestConfigYaml
-        
+
         $inputfile_new = $yml["input-file"]
         $inputfile_new.Count | Should -Be 0
 
@@ -94,9 +97,9 @@ Describe "update autorest.md" -Tag "UnitTest" {
             $lines = $range[1] - $range[0] - 1
             $autorestConfigYaml = ($autorestConfigYaml | Select -Skip $startNum | Select -First $lines) |Out-String
         }
-        
+
         $yml = ConvertFrom-YAML $autorestConfigYaml
-        
+
         $title = $yml["title"]
         $title | Should -Be "AzurePurviewAdministration"
 
@@ -111,7 +114,7 @@ Describe "Generate and Build SDK" -Tag "Unit" {
         $sdkRootPath =  (Join-Path $PSScriptRoot .. .. .. ..)
         $sdkRootPath = Resolve-Path $sdkRootPath
     }
-    
+
     it("generate sdk by readme.md") {
         $readme = "https://github.com/Azure/azure-rest-api-specs/blob/5ee062ac3cc2df298ff47bdfc7792d257fd85bb8/specification/deviceupdate/data-plane/readme.md"
 
