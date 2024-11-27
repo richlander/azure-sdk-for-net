@@ -155,6 +155,12 @@ function Install-ModuleIfNotInstalled()
     $mutex.ReleaseMutex()
   }
 
+  Write-Host "BEBRODER MODULE"
+  write-host $module.GetType()
+  write-host $module
+  write-host $module | ConvertTo-Json
+  $module
+
   return $module
 }
 
