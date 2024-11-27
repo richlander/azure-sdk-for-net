@@ -4,6 +4,7 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
     ServiceDirectory: documentintelligence
+    TimeoutInMinutes: 90
     CloudConfig:
       Public:
         Location: 'eastus'
