@@ -77,7 +77,7 @@ namespace Azure.ResourceManager.Chaos
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/> or <paramref name="targetTypeName"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/> or <paramref name="targetTypeName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response<ChaosTargetTypeData>> GetAsync(string subscriptionId, AzureLocation location, string targetTypeName, CancellationToken cancellationToken = default)
+        public async Task<Response<ChaosTargetMetadataData>> GetAsync(string subscriptionId, AzureLocation location, string targetTypeName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(targetTypeName, nameof(targetTypeName));
@@ -88,13 +88,13 @@ namespace Azure.ResourceManager.Chaos
             {
                 case 200:
                     {
-                        ChaosTargetTypeData value = default;
+                        ChaosTargetMetadataData value = default;
                         using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
-                        value = ChaosTargetTypeData.DeserializeChaosTargetTypeData(document.RootElement);
+                        value = ChaosTargetMetadataData.DeserializeChaosTargetMetadataData(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 case 404:
-                    return Response.FromValue((ChaosTargetTypeData)null, message.Response);
+                    return Response.FromValue((ChaosTargetMetadataData)null, message.Response);
                 default:
                     throw new RequestFailedException(message.Response);
             }
@@ -107,7 +107,7 @@ namespace Azure.ResourceManager.Chaos
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/> or <paramref name="targetTypeName"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/> or <paramref name="targetTypeName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response<ChaosTargetTypeData> Get(string subscriptionId, AzureLocation location, string targetTypeName, CancellationToken cancellationToken = default)
+        public Response<ChaosTargetMetadataData> Get(string subscriptionId, AzureLocation location, string targetTypeName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(targetTypeName, nameof(targetTypeName));
@@ -118,13 +118,13 @@ namespace Azure.ResourceManager.Chaos
             {
                 case 200:
                     {
-                        ChaosTargetTypeData value = default;
+                        ChaosTargetMetadataData value = default;
                         using var document = JsonDocument.Parse(message.Response.ContentStream);
-                        value = ChaosTargetTypeData.DeserializeChaosTargetTypeData(document.RootElement);
+                        value = ChaosTargetMetadataData.DeserializeChaosTargetMetadataData(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 case 404:
-                    return Response.FromValue((ChaosTargetTypeData)null, message.Response);
+                    return Response.FromValue((ChaosTargetMetadataData)null, message.Response);
                 default:
                     throw new RequestFailedException(message.Response);
             }

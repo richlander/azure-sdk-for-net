@@ -10,16 +10,15 @@ using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.Text.Json;
 using Azure.Core;
-using Azure.ResourceManager.Chaos.Models;
 using Azure.ResourceManager.Models;
 
 namespace Azure.ResourceManager.Chaos
 {
-    public partial class ChaosExperimentExecutionData : IUtf8JsonSerializable, IJsonModel<ChaosExperimentExecutionData>
+    public partial class ChaosTargetMetadataData : IUtf8JsonSerializable, IJsonModel<ChaosTargetMetadataData>
     {
-        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer) => ((IJsonModel<ChaosExperimentExecutionData>)this).Write(writer, ModelSerializationExtensions.WireOptions);
+        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer) => ((IJsonModel<ChaosTargetMetadataData>)this).Write(writer, ModelSerializationExtensions.WireOptions);
 
-        void IJsonModel<ChaosExperimentExecutionData>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+        void IJsonModel<ChaosTargetMetadataData>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
         {
             writer.WriteStartObject();
             JsonModelWriteCore(writer, options);
@@ -30,51 +29,56 @@ namespace Azure.ResourceManager.Chaos
         /// <param name="options"> The client options for reading and writing models. </param>
         protected override void JsonModelWriteCore(Utf8JsonWriter writer, ModelReaderWriterOptions options)
         {
-            var format = options.Format == "W" ? ((IPersistableModel<ChaosExperimentExecutionData>)this).GetFormatFromOptions(options) : options.Format;
+            var format = options.Format == "W" ? ((IPersistableModel<ChaosTargetMetadataData>)this).GetFormatFromOptions(options) : options.Format;
             if (format != "J")
             {
-                throw new FormatException($"The model {nameof(ChaosExperimentExecutionData)} does not support writing '{format}' format.");
+                throw new FormatException($"The model {nameof(ChaosTargetMetadataData)} does not support writing '{format}' format.");
             }
 
             base.JsonModelWriteCore(writer, options);
             writer.WritePropertyName("properties"u8);
             writer.WriteStartObject();
-            if (Optional.IsDefined(Status))
+            if (options.Format != "W" && Optional.IsDefined(DisplayName))
             {
-                writer.WritePropertyName("status"u8);
-                writer.WriteStringValue(Status);
+                writer.WritePropertyName("displayName"u8);
+                writer.WriteStringValue(DisplayName);
             }
-            if (Optional.IsDefined(StartedOn))
+            if (options.Format != "W" && Optional.IsDefined(Description))
             {
-                writer.WritePropertyName("startedAt"u8);
-                writer.WriteStringValue(StartedOn.Value, "O");
+                writer.WritePropertyName("description"u8);
+                writer.WriteStringValue(Description);
             }
-            if (Optional.IsDefined(StoppedOn))
+            if (options.Format != "W" && Optional.IsDefined(PropertiesSchema))
             {
-                writer.WritePropertyName("stoppedAt"u8);
-                writer.WriteStringValue(StoppedOn.Value, "O");
+                writer.WritePropertyName("propertiesSchema"u8);
+                writer.WriteStringValue(PropertiesSchema);
             }
-            if (options.Format != "W" && Optional.IsDefined(ProvisioningState))
+            if (options.Format != "W" && Optional.IsCollectionDefined(ResourceTypes))
             {
-                writer.WritePropertyName("provisioningState"u8);
-                writer.WriteStringValue(ProvisioningState.Value.ToString());
+                writer.WritePropertyName("resourceTypes"u8);
+                writer.WriteStartArray();
+                foreach (var item in ResourceTypes)
+                {
+                    writer.WriteStringValue(item);
+                }
+                writer.WriteEndArray();
             }
             writer.WriteEndObject();
         }
 
-        ChaosExperimentExecutionData IJsonModel<ChaosExperimentExecutionData>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
+        ChaosTargetMetadataData IJsonModel<ChaosTargetMetadataData>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
         {
-            var format = options.Format == "W" ? ((IPersistableModel<ChaosExperimentExecutionData>)this).GetFormatFromOptions(options) : options.Format;
+            var format = options.Format == "W" ? ((IPersistableModel<ChaosTargetMetadataData>)this).GetFormatFromOptions(options) : options.Format;
             if (format != "J")
             {
-                throw new FormatException($"The model {nameof(ChaosExperimentExecutionData)} does not support reading '{format}' format.");
+                throw new FormatException($"The model {nameof(ChaosTargetMetadataData)} does not support reading '{format}' format.");
             }
 
             using JsonDocument document = JsonDocument.ParseValue(ref reader);
-            return DeserializeChaosExperimentExecutionData(document.RootElement, options);
+            return DeserializeChaosTargetMetadataData(document.RootElement, options);
         }
 
-        internal static ChaosExperimentExecutionData DeserializeChaosExperimentExecutionData(JsonElement element, ModelReaderWriterOptions options = null)
+        internal static ChaosTargetMetadataData DeserializeChaosTargetMetadataData(JsonElement element, ModelReaderWriterOptions options = null)
         {
             options ??= ModelSerializationExtensions.WireOptions;
 
@@ -86,10 +90,10 @@ namespace Azure.ResourceManager.Chaos
             string name = default;
             ResourceType type = default;
             SystemData systemData = default;
-            string status = default;
-            DateTimeOffset? startedAt = default;
-            DateTimeOffset? stoppedAt = default;
-            ChaosProvisioningState? provisioningState = default;
+            string displayName = default;
+            string description = default;
+            string propertiesSchema = default;
+            IReadOnlyList<string> resourceTypes = default;
             IDictionary<string, BinaryData> serializedAdditionalRawData = default;
             Dictionary<string, BinaryData> rawDataDictionary = new Dictionary<string, BinaryData>();
             foreach (var property in element.EnumerateObject())
@@ -127,36 +131,33 @@ namespace Azure.ResourceManager.Chaos
                     }
                     foreach (var property0 in property.Value.EnumerateObject())
                     {
-                        if (property0.NameEquals("status"u8))
+                        if (property0.NameEquals("displayName"u8))
                         {
-                            status = property0.Value.GetString();
+                            displayName = property0.Value.GetString();
                             continue;
                         }
-                        if (property0.NameEquals("startedAt"u8))
+                        if (property0.NameEquals("description"u8))
+                        {
+                            description = property0.Value.GetString();
+                            continue;
+                        }
+                        if (property0.NameEquals("propertiesSchema"u8))
+                        {
+                            propertiesSchema = property0.Value.GetString();
+                            continue;
+                        }
+                        if (property0.NameEquals("resourceTypes"u8))
                         {
                             if (property0.Value.ValueKind == JsonValueKind.Null)
                             {
                                 continue;
                             }
-                            startedAt = property0.Value.GetDateTimeOffset("O");
-                            continue;
-                        }
-                        if (property0.NameEquals("stoppedAt"u8))
-                        {
-                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            List<string> array = new List<string>();
+                            foreach (var item in property0.Value.EnumerateArray())
                             {
-                                continue;
+                                array.Add(item.GetString());
                             }
-                            stoppedAt = property0.Value.GetDateTimeOffset("O");
-                            continue;
-                        }
-                        if (property0.NameEquals("provisioningState"u8))
-                        {
-                            if (property0.Value.ValueKind == JsonValueKind.Null)
-                            {
-                                continue;
-                            }
-                            provisioningState = new ChaosProvisioningState(property0.Value.GetString());
+                            resourceTypes = array;
                             continue;
                         }
                     }
@@ -168,47 +169,47 @@ namespace Azure.ResourceManager.Chaos
                 }
             }
             serializedAdditionalRawData = rawDataDictionary;
-            return new ChaosExperimentExecutionData(
+            return new ChaosTargetMetadataData(
                 id,
                 name,
                 type,
                 systemData,
-                status,
-                startedAt,
-                stoppedAt,
-                provisioningState,
+                displayName,
+                description,
+                propertiesSchema,
+                resourceTypes ?? new ChangeTrackingList<string>(),
                 serializedAdditionalRawData);
         }
 
-        BinaryData IPersistableModel<ChaosExperimentExecutionData>.Write(ModelReaderWriterOptions options)
+        BinaryData IPersistableModel<ChaosTargetMetadataData>.Write(ModelReaderWriterOptions options)
         {
-            var format = options.Format == "W" ? ((IPersistableModel<ChaosExperimentExecutionData>)this).GetFormatFromOptions(options) : options.Format;
+            var format = options.Format == "W" ? ((IPersistableModel<ChaosTargetMetadataData>)this).GetFormatFromOptions(options) : options.Format;
 
             switch (format)
             {
                 case "J":
                     return ModelReaderWriter.Write(this, options);
                 default:
-                    throw new FormatException($"The model {nameof(ChaosExperimentExecutionData)} does not support writing '{options.Format}' format.");
+                    throw new FormatException($"The model {nameof(ChaosTargetMetadataData)} does not support writing '{options.Format}' format.");
             }
         }
 
-        ChaosExperimentExecutionData IPersistableModel<ChaosExperimentExecutionData>.Create(BinaryData data, ModelReaderWriterOptions options)
+        ChaosTargetMetadataData IPersistableModel<ChaosTargetMetadataData>.Create(BinaryData data, ModelReaderWriterOptions options)
         {
-            var format = options.Format == "W" ? ((IPersistableModel<ChaosExperimentExecutionData>)this).GetFormatFromOptions(options) : options.Format;
+            var format = options.Format == "W" ? ((IPersistableModel<ChaosTargetMetadataData>)this).GetFormatFromOptions(options) : options.Format;
 
             switch (format)
             {
                 case "J":
                     {
                         using JsonDocument document = JsonDocument.Parse(data);
-                        return DeserializeChaosExperimentExecutionData(document.RootElement, options);
+                        return DeserializeChaosTargetMetadataData(document.RootElement, options);
                     }
                 default:
-                    throw new FormatException($"The model {nameof(ChaosExperimentExecutionData)} does not support reading '{options.Format}' format.");
+                    throw new FormatException($"The model {nameof(ChaosTargetMetadataData)} does not support reading '{options.Format}' format.");
             }
         }
 
-        string IPersistableModel<ChaosExperimentExecutionData>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
+        string IPersistableModel<ChaosTargetMetadataData>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
     }
 }
