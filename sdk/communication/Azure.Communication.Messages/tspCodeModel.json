@@ -295,8 +295,8 @@
     {
      "$id": "34",
      "kind": "enumvalue",
-     "name": "actionSet",
-     "value": "actionSet",
+     "name": "group",
+     "value": "group",
      "valueType": {
       "$id": "35",
       "kind": "string",
@@ -2055,8 +2055,8 @@
             "url": {
              "$id": "214",
              "kind": "model",
-             "name": "UrlContent",
-             "crossLanguageDefinitionId": "Azure.Communication.MessagesService.UrlContent",
+             "name": "LinkContent",
+             "crossLanguageDefinitionId": "Azure.Communication.MessagesService.LinkContent",
              "usage": "Input,Json",
              "description": "The message content of type Url information.",
              "discriminatorValue": "url",
@@ -2089,7 +2089,7 @@
                "discriminator": true,
                "flatten": false,
                "decorators": [],
-               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.UrlContent.kind"
+               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.LinkContent.kind"
               },
               {
                "$id": "218",
@@ -2109,12 +2109,12 @@
                "discriminator": false,
                "flatten": false,
                "decorators": [],
-               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.UrlContent.title"
+               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.LinkContent.title"
               },
               {
                "$id": "220",
                "kind": "property",
-               "name": "url",
+               "name": "uri",
                "serializedName": "url",
                "description": "The url in the content.",
                "type": {
@@ -2129,18 +2129,18 @@
                "discriminator": false,
                "flatten": false,
                "decorators": [],
-               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.UrlContent.url"
+               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.LinkContent.url"
               }
              ]
             },
-            "actionSet": {
+            "group": {
              "$id": "222",
              "kind": "model",
-             "name": "ActionSetContent",
-             "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionSetContent",
+             "name": "ActionGroupContent",
+             "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionGroupContent",
              "usage": "Input,Json",
-             "description": "The action content of type ActionSet.",
-             "discriminatorValue": "actionSet",
+             "description": "The action content of type ActionGroup.",
+             "discriminatorValue": "group",
              "decorators": [],
              "baseModel": {
               "$ref": "176"
@@ -2151,7 +2151,7 @@
                "kind": "property",
                "name": "kind",
                "serializedName": "kind",
-               "description": "Message content kind is actionSet.",
+               "description": "Message content kind is actionGroup.",
                "type": {
                 "$id": "224",
                 "kind": "constant",
@@ -2162,7 +2162,7 @@
                  "crossLanguageDefinitionId": "TypeSpec.string",
                  "decorators": []
                 },
-                "value": "actionSet",
+                "value": "group",
                 "decorators": []
                },
                "optional": false,
@@ -2170,14 +2170,14 @@
                "discriminator": true,
                "flatten": false,
                "decorators": [],
-               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionSetContent.kind"
+               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionGroupContent.kind"
               },
               {
                "$id": "226",
                "kind": "property",
                "name": "title",
                "serializedName": "title",
-               "description": "Title of the actionSet content.",
+               "description": "Title of the actionGroup content.",
                "type": {
                 "$id": "227",
                 "kind": "string",
@@ -2190,25 +2190,25 @@
                "discriminator": false,
                "flatten": false,
                "decorators": [],
-               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionSetContent.title"
+               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionGroupContent.title"
               },
               {
                "$id": "228",
                "kind": "property",
-               "name": "actionSet",
-               "serializedName": "actionSet",
+               "name": "groups",
+               "serializedName": "groups",
                "description": "Set or group of actions.",
                "type": {
                 "$id": "229",
                 "kind": "array",
-                "name": "ArrayActionSet",
+                "name": "ArrayActionGroup",
                 "valueType": {
                  "$id": "230",
                  "kind": "model",
-                 "name": "ActionSet",
-                 "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionSet",
+                 "name": "ActionGroup",
+                 "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionGroup",
                  "usage": "Input,Json",
-                 "description": "The Action Set content.",
+                 "description": "The Action Group content.",
                  "decorators": [],
                  "properties": [
                   {
@@ -2216,7 +2216,7 @@
                    "kind": "property",
                    "name": "title",
                    "serializedName": "title",
-                   "description": "Title of the ActionSet.",
+                   "description": "Title of the ActionGroup.",
                    "type": {
                     "$id": "232",
                     "kind": "string",
@@ -2229,25 +2229,25 @@
                    "discriminator": false,
                    "flatten": false,
                    "decorators": [],
-                   "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionSet.title"
+                   "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionGroup.title"
                   },
                   {
                    "$id": "233",
                    "kind": "property",
                    "name": "items",
                    "serializedName": "items",
-                   "description": "Array of items in ActionSet.",
+                   "description": "Array of items in ActionGroup.",
                    "type": {
                     "$id": "234",
                     "kind": "array",
-                    "name": "ArrayActionSetItem",
+                    "name": "ArrayActionGroupItem",
                     "valueType": {
                      "$id": "235",
                      "kind": "model",
-                     "name": "ActionSetItem",
-                     "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionSetItem",
+                     "name": "ActionGroupItem",
+                     "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionGroupItem",
                      "usage": "Input,Json",
-                     "description": "The Action set item in the content.",
+                     "description": "The Action group item in the content.",
                      "decorators": [],
                      "properties": [
                       {
@@ -2268,7 +2268,7 @@
                        "discriminator": false,
                        "flatten": false,
                        "decorators": [],
-                       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionSetItem.id"
+                       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionGroupItem.id"
                       },
                       {
                        "$id": "238",
@@ -2288,7 +2288,7 @@
                        "discriminator": false,
                        "flatten": false,
                        "decorators": [],
-                       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionSetItem.title"
+                       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionGroupItem.title"
                       },
                       {
                        "$id": "240",
@@ -2308,7 +2308,7 @@
                        "discriminator": false,
                        "flatten": false,
                        "decorators": [],
-                       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionSetItem.description"
+                       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionGroupItem.description"
                       }
                      ]
                     },
@@ -2320,7 +2320,7 @@
                    "discriminator": false,
                    "flatten": false,
                    "decorators": [],
-                   "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionSet.items"
+                   "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionGroup.items"
                   }
                  ]
                 },
@@ -2332,7 +2332,7 @@
                "discriminator": false,
                "flatten": false,
                "decorators": [],
-               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionSetContent.actionSet"
+               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionGroupContent.groups"
               }
              ]
             }
@@ -2380,8 +2380,8 @@
          {
           "$id": "244",
           "kind": "property",
-          "name": "actionBindings",
-          "serializedName": "actionBindings",
+          "name": "action",
+          "serializedName": "action",
           "description": "The binding object to get or set Action which describes options user have to respond to message.",
           "type": {
            "$id": "245",
@@ -2394,8 +2394,8 @@
            "discriminatorProperty": {
             "$id": "246",
             "kind": "property",
-            "name": "actionBindingKind",
-            "serializedName": "actionBindingKind",
+            "name": "kind",
+            "serializedName": "kind",
             "description": "Kind of the MessageActionBinding.",
             "type": {
              "$ref": "40"
@@ -2405,7 +2405,7 @@
             "discriminator": true,
             "flatten": false,
             "decorators": [],
-            "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionBindings.actionBindingKind"
+            "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ActionBindings.kind"
            },
            "properties": [
             {
@@ -2430,8 +2430,8 @@
               {
                "$id": "249",
                "kind": "property",
-               "name": "actionBindingKind",
-               "serializedName": "actionBindingKind",
+               "name": "kind",
+               "serializedName": "kind",
                "description": "Message action binding type is WhatsAppListAction.",
                "type": {
                 "$id": "250",
@@ -2451,13 +2451,13 @@
                "discriminator": true,
                "flatten": false,
                "decorators": [],
-               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppListActionBindings.actionBindingKind"
+               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppListActionBindings.kind"
               },
               {
                "$id": "252",
                "kind": "property",
-               "name": "action",
-               "serializedName": "action",
+               "name": "content",
+               "serializedName": "content",
                "description": "Action content of Interactive message.",
                "type": {
                 "$ref": "222"
@@ -2467,7 +2467,7 @@
                "discriminator": false,
                "flatten": false,
                "decorators": [],
-               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppListActionBindings.action"
+               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppListActionBindings.content"
               }
              ]
             },
@@ -2487,8 +2487,8 @@
               {
                "$id": "254",
                "kind": "property",
-               "name": "actionBindingKind",
-               "serializedName": "actionBindingKind",
+               "name": "kind",
+               "serializedName": "kind",
                "description": "Message action binding type is WhatsAppButtonAction.",
                "type": {
                 "$id": "255",
@@ -2508,14 +2508,14 @@
                "discriminator": true,
                "flatten": false,
                "decorators": [],
-               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppButtonActionBindings.actionBindingKind"
+               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppButtonActionBindings.kind"
               },
               {
                "$id": "257",
                "kind": "property",
-               "name": "action",
-               "serializedName": "action",
-               "description": "Action content of Button based Interactive message.",
+               "name": "content",
+               "serializedName": "content",
+               "description": "Action content of Interactive message.",
                "type": {
                 "$ref": "203"
                },
@@ -2524,7 +2524,7 @@
                "discriminator": false,
                "flatten": false,
                "decorators": [],
-               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppButtonActionBindings.action"
+               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppButtonActionBindings.content"
               }
              ]
             },
@@ -2544,8 +2544,8 @@
               {
                "$id": "259",
                "kind": "property",
-               "name": "actionBindingKind",
-               "serializedName": "actionBindingKind",
+               "name": "kind",
+               "serializedName": "kind",
                "description": "Message action binding type is WhatsAppUrlAction.",
                "type": {
                 "$id": "260",
@@ -2565,14 +2565,14 @@
                "discriminator": true,
                "flatten": false,
                "decorators": [],
-               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppUrlActionBindings.actionBindingKind"
+               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppUrlActionBindings.kind"
               },
               {
                "$id": "262",
                "kind": "property",
-               "name": "action",
-               "serializedName": "action",
-               "description": "Action content of Quick action Interactive message.",
+               "name": "content",
+               "serializedName": "content",
+               "description": "Action content of Interactive message.",
                "type": {
                 "$ref": "214"
                },
@@ -2581,7 +2581,7 @@
                "discriminator": false,
                "flatten": false,
                "decorators": [],
-               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppUrlActionBindings.action"
+               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppUrlActionBindings.content"
               }
              ]
             }
@@ -2592,7 +2592,7 @@
           "discriminator": false,
           "flatten": false,
           "decorators": [],
-          "crossLanguageDefinitionId": "Azure.Communication.MessagesService.InteractiveMessage.actionBindings"
+          "crossLanguageDefinitionId": "Azure.Communication.MessagesService.InteractiveMessage.action"
          }
         ]
        },
