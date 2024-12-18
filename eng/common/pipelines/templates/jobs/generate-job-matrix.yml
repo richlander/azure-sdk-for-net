@@ -132,7 +132,6 @@ jobs:
     - ${{ else }}:
       - ${{ each pool in parameters.Pools }}:
         - pwsh: |
-            # dump the conglomerated CI matrix
             '${{ convertToJson(parameters.MatrixConfigs) }}' | Set-Content matrix.json
 
             ./eng/common/scripts/job-matrix/Create-PrJobMatrix.ps1 `
