@@ -353,7 +353,7 @@ jobs:
           PRMatrixSetting: ProjectNames
           PRJobBatchSize: 20
           PRMatrixIndirectFilters:
-            - 'AdditionalTestArgs=.*true'
+            - 'AdditionalTestArguments=.*true'
           PreGenerationSteps:
             - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
               parameters:
