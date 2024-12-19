@@ -1,42 +1,48 @@
 parameters:
-  - name: SpecRepoUrl
-    type: string
-    default: 'https://github.com/Azure/azure-rest-api-specs'
   - name: SpecRepoBranch
     type: string
-    default: 'main'
   - name: SpecRepoCommit
     type: string
-    default: ''
   - name: SdkRepoUrl
     type: string
-    default: $(Build.Repository.Name)
+  - name: SdkRepoFullName
+    type: string
+  - name: SdkRepoName
+    type: string
+  - name: SdkRepoNameForSpecGen
+    type: string
   - name: SdkRepoBranch
     type: string
-    default: 'main'
+  - name: TspConfigPath
+    type: string
+  - name: PushGeneratedCodeToRemote
+    type: boolean
+  - name: CreatePullRequest
+    type: boolean
+  - name: CreateAPIView
+    type: boolean
 
 jobs:
 - job:
   displayName: 'SDK Generation'
   variables:
     - template: /eng/pipelines/templates/variables/image.yml
+    - name: SpecRepoUrl
+      value: 'https://github.com/Azure/azure-rest-api-specs'
     - name: SpecRepoFullName
-      value: $[replace(parameters.SpecRepoUrl, 'https://github.com/', '')]
+      value: 'Azure/azure-rest-api-specs'
     - name: SpecRepoName
-      value: $[replace(parameters.SpecRepoUrl, 'https://github.com/Azure/', '')]
-    - name: SdkRepoFullName
-      value: $[replace(parameters.SdkRepoUrl, 'https://github.com/', '')]
-    - name: SdkRepoName
-      value: $[replace(parameters.SdkRepoUrl, 'https://github.com/Azure/', '')]
+      value: 'azure-rest-api-specs'
+    - name: SpecRepoDirectory
+      value: $(System.DefaultWorkingDirectory)/$(SpecRepoName)
+    - name: SdkRepoDirectory
+      value: $(System.DefaultWorkingDirectory)/${{ parameters.SdkRepoName }}
   pool:
     name: $(LINUXPOOL)
     vmImage: $(LINUXVMIMAGE)
 
   steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '22.x'
-      displayName: 'Install Node.js'
+    - checkout: none
 
     - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
       parameters:
@@ -49,10 +55,55 @@ jobs:
         Repositories:
         - Name: $(SpecRepoFullName)
           Commitish: ${{ parameters.SpecRepoBranch }}
-          WorkingDirectory: $(System.DefaultWorkingDirectory)/$(SpecRepoName)
-        - Name: $(SdkRepoFullName)
+          WorkingDirectory: $(SpecRepoDirectory)
+        - Name: ${{ parameters.SdkRepoFullName }}
           Commitish: ${{ parameters.SdkRepoBranch }}
-          WorkingDirectory: $(System.DefaultWorkingDirectory)/$(SdkRepoName)
+          WorkingDirectory: $(SdkRepoDirectory)
+
+    - script: |
+        if [ "${{ parameters.SpecRepoCommit }}" = "HEAD" ]; then
+          cd $(SpecRepoDirectory)
+          default_commit=$(git rev-parse HEAD)
+          echo "##vso[task.setvariable variable=SpecRepoCommit]$default_commit"
+          echo "SpecRepoCommit variable set to default commit: $default_commit"
+        else
+          echo "##vso[task.setvariable variable=SpecRepoCommit]${{ parameters.SpecRepoCommit }}"
+          echo "SpecRepoCommit variable set to: ${{ parameters.SpecRepoCommit }}"
+        fi
+      displayName: 'Set SpecRepoCommit variable'
+
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '22.x'
+      displayName: 'Install Node.js'
+
+    - script: |
+        npm install -g @azure-tools/spec-gen-sdk
+      displayName: 'Install spec-gen-sdk'
+
+    - script: |
+        spec-gen-sdk \
+          --scp "$(SpecRepoDirectory)" \
+          --sdp "$(SdkRepoDirectory)" \
+          --wf "$(SdkRepoDirectory)" \
+          --tsp-config-relative-path "${{ parameters.TspConfigPath }}" \
+          -l "${{ parameters.SdkRepoNameForSpecGen }}" \
+          -c "$(SpecRepoCommit)"
+      displayName: 'Generate SDK'
+
+    - script: |
+        echo "This step runs only if PushGeneratedCodeToRemote is true"
+      displayName: 'Conditional Step'
+      condition: and(succeeded(), eq('${{ parameters.PushGeneratedCodeToRemote }}', true))
     
+    - script: |
+        echo "This step runs only if CreatePullRequest is true"
+      displayName: 'Conditional Step'
+      condition: and(succeeded(), eq('${{ parameters.CreatePullRequest }}', true))
+
+    - script: |
+        echo "This step runs only if CreateAPIView is true"
+      displayName: 'Conditional Step'
+      condition: and(succeeded(), eq('${{ parameters.CreateAPIView }}', true))
 
   

@@ -1,0 +1,40 @@
+parameters:
+  - name: SpecRepoBranch
+    type: string
+    default: 'main'
+  - name: SdkRepoBranch
+    type: string
+    default: 'main'
+  - name: SpecRepoCommit
+    type: string
+    default: 'HEAD'
+  - name: TspConfigPath
+    type: string
+    default: 'specification/contosowidgetmanager/Contoso.Management/tspconfig.yaml'
+  - name: PushGeneratedCodeToRemote
+    type: boolean
+    default: false
+  - name: CreatePullRequest
+    type: boolean
+    default: false
+  - name: CreateAPIView
+    type: boolean
+    default: false
+
+trigger: none
+pr: none
+
+extends:
+  template: /eng/common/pipelines/templates/jobs/sdk-generation.yml
+  parameters:
+    SpecRepoBranch: ${{ parameters.SpecRepoBranch }}
+    SpecRepoCommit: ${{ parameters.SpecRepoCommit }}
+    SdkRepoUrl: 'https://github.com/Azure/azure-sdk-for-net'
+    SdkRepoFullName: 'Azure/azure-sdk-for-net'
+    SdkRepoName: 'azure-sdk-for-net'
+    SdkRepoNameForSpecGen: 'azure-sdk-for-net-track2'
+    SdkRepoBranch: ${{ parameters.SdkRepoBranch }}
+    TspConfigPath: ${{ parameters.TspConfigPath }}
+    PushGeneratedCodeToRemote: ${{ parameters.PushGeneratedCodeToRemote }}
+    CreatePullRequest: ${{ parameters.CreatePullRequest }}
+    CreateAPIView: ${{ parameters.CreateAPIView }}
