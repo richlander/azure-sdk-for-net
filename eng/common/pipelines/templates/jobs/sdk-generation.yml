@@ -1,0 +1,58 @@
+parameters:
+  - name: SpecRepoUrl
+    type: string
+    default: 'https://github.com/Azure/azure-rest-api-specs'
+  - name: SpecRepoBranch
+    type: string
+    default: 'main'
+  - name: SpecRepoCommit
+    type: string
+    default: ''
+  - name: SdkRepoUrl
+    type: string
+    default: $(Build.Repository.Name)
+  - name: SdkRepoBranch
+    type: string
+    default: 'main'
+
+jobs:
+- job:
+  displayName: 'SDK Generation'
+  variables:
+    - template: /eng/pipelines/templates/variables/image.yml
+    - name: SpecRepoFullName
+      value: $[replace(parameters.SpecRepoUrl, 'https://github.com/', '')]
+    - name: SpecRepoName
+      value: $[replace(parameters.SpecRepoUrl, 'https://github.com/Azure/', '')]
+    - name: SdkRepoFullName
+      value: $[replace(parameters.SdkRepoUrl, 'https://github.com/', '')]
+    - name: SdkRepoName
+      value: $[replace(parameters.SdkRepoUrl, 'https://github.com/Azure/', '')]
+  pool:
+    name: $(LINUXPOOL)
+    vmImage: $(LINUXVMIMAGE)
+
+  steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '22.x'
+      displayName: 'Install Node.js'
+
+    - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+      parameters:
+        Paths:
+        - '/*'
+        - '!sdk/**/test-recordings/*'
+        - '!sdk/**/recordings/*'
+        - '!sdk/**/SessionRecords/*'
+        - '!sdk/**/session-records/*'
+        Repositories:
+        - Name: $(SpecRepoFullName)
+          Commitish: ${{ parameters.SpecRepoBranch }}
+          WorkingDirectory: $(System.DefaultWorkingDirectory)/$(SpecRepoName)
+        - Name: $(SdkRepoFullName)
+          Commitish: ${{ parameters.SdkRepoBranch }}
+          WorkingDirectory: $(System.DefaultWorkingDirectory)/$(SdkRepoName)
+    
+
+  
