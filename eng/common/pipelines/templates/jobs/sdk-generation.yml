@@ -85,7 +85,7 @@ jobs:
         spec-gen-sdk \
           --scp "$(SpecRepoDirectory)" \
           --sdp "$(SdkRepoDirectory)" \
-          --wf "$(SdkRepoDirectory)" \
+          --wf "$(System.DefaultWorkingDirectory)" \
           --tsp-config-relative-path "${{ parameters.TspConfigPath }}" \
           -l "${{ parameters.SdkRepoNameForSpecGen }}" \
           -c "$(SpecRepoCommit)"
